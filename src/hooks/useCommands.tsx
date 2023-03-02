@@ -1,9 +1,9 @@
 import { SetStateAction } from 'react';
 import {
-  LETTERS_LENGTH,
   TOTAL_WORDS,
-  WordState
-} from '../App';
+  useGame,
+  WORD_LENGTH
+} from '../context/Game';
 import { checkIfExists } from '../utils/word-utils';
 
 export interface EnterProps {
@@ -16,17 +16,9 @@ export interface EnterProps {
   ) => void;
 }
 
-interface UseCommandProps {
-  words: WordState[];
-  currentWordIndex: number;
-  setWords: (value: SetStateAction<WordState[]>) => void;
-}
+export const useCommands = () => {
+  const { words, currentWordIndex, setWords } = useGame();
 
-export const useCommands = ({
-  currentWordIndex,
-  words,
-  setWords
-}: UseCommandProps) => {
   const handleEnter = ({
     correctWord,
     isWinner,
@@ -36,9 +28,8 @@ export const useCommands = ({
   }: EnterProps) => {
     const { word } = words[currentWordIndex];
 
-    if (word.length < LETTERS_LENGTH) return;
-
-    if (!checkIfExists(word)) return;
+    if (word.length < WORD_LENGTH || !checkIfExists(word))
+      return;
 
     const copiedWords = [...words];
 
@@ -49,19 +40,20 @@ export const useCommands = ({
 
     if (word === correctWord) {
       setWords(copiedWords);
-      return setIsWinner(true);
+      setIsWinner(true);
+      return;
     }
 
-    const nextIndex = 1;
+    const wordOffset = 1;
 
-    const quantityOfWords = currentWordIndex + nextIndex;
+    const nextIndex = currentWordIndex + wordOffset;
 
-    if (!isWinner && quantityOfWords === TOTAL_WORDS)
+    if (!isWinner && nextIndex === TOTAL_WORDS)
       setIsLoser(true);
 
     setCurrentWordIndex((prev) => prev + 1);
 
-    return setWords(copiedWords);
+    setWords(copiedWords);
   };
 
   const handleBackspace = () => {

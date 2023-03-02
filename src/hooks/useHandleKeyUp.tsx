@@ -1,62 +1,63 @@
-import { Dispatch, SetStateAction, useEffect } from 'react';
-import { LETTERS_LENGTH, WordState } from '../App';
+import { useCallback, useEffect } from 'react';
+import { useGame, WORD_LENGTH } from '../context/Game';
 import { EnterProps } from './useCommands';
 
 interface Props {
-  correctWord: string;
-  currentWordIndex: number;
-  isLoser: boolean;
-  isWinner: boolean;
-  words: WordState[];
-  setWords: Dispatch<SetStateAction<WordState[]>>;
   handleBackspace(): void;
   handleEnter(p: EnterProps): void;
-  setCurrentWordIndex: Dispatch<SetStateAction<number>>;
-  setIsLoser: Dispatch<SetStateAction<boolean>>;
-  setIsWinner: Dispatch<SetStateAction<boolean>>;
 }
 
-export const useHandleKeyUp = ({
-  words,
-  isLoser,
-  isWinner,
-  correctWord,
-  currentWordIndex,
-  setWords,
-  handleBackspace,
-  handleEnter,
-  setCurrentWordIndex,
-  setIsLoser,
-  setIsWinner
-}: Props) => {
-  const handleKeyUp = (e: KeyboardEvent) => {
-    if (e.key.length > 1) {
-      switch (e.key) {
-        case 'Enter':
-          return handleEnter({
-            correctWord,
-            isWinner,
-            setCurrentWordIndex,
-            setIsLoser,
-            setIsWinner
-          });
-        case 'Backspace':
-          return handleBackspace();
-      }
-      return;
-    }
+const isLetter = (str: string) => /^[a-zA-Z]+$/.test(str);
 
-    if (isNaN(+e.key)) {
+export const useHandleKeyUp = ({
+  handleEnter,
+  handleBackspace
+}: Props) => {
+  const {
+    words,
+    correctWord,
+    isLoser,
+    isWinner,
+    currentWordIndex,
+    setWords,
+    setCurrentWordIndex,
+    setIsLoser,
+    setIsWinner
+  } = useGame();
+
+  const handleEnterKey = useCallback(() => {
+    handleEnter({
+      correctWord,
+      isWinner,
+      setCurrentWordIndex,
+      setIsLoser,
+      setIsWinner
+    });
+  }, [
+    correctWord,
+    isWinner,
+    handleEnter,
+    setCurrentWordIndex,
+    setIsLoser,
+    setIsWinner
+  ]);
+
+  const handleBackspaceKey = useCallback(() => {
+    handleBackspace();
+  }, [handleBackspace]);
+
+  const handleLetterKey = useCallback(
+    (key: string) => {
+      if (!isLetter(key)) return;
+
       setWords((prev) => {
         const copy = [...prev];
-
         const { word, hasAlreadyBeenFilled } =
           copy[currentWordIndex];
 
-        if (word.length >= LETTERS_LENGTH) return copy;
+        if (word.length >= WORD_LENGTH) return copy;
 
-        let updatedWord = word + e.key;
-
+        const updatedWord = word + key;
         copy.splice(currentWordIndex, 1, {
           hasAlreadyBeenFilled,
           word: updatedWord
@@ -64,19 +65,37 @@ export const useHandleKeyUp = ({
 
         return copy;
       });
-    }
-  };
+    },
+    [currentWordIndex, setWords]
+  );
+
+  const handleKeyUp = useCallback(
+    (e: KeyboardEvent) => {
+      const key = e.key;
+
+      const handlers = {
+        Enter: handleEnterKey,
+        Backspace: handleBackspaceKey
+      };
+
+      const handler =
+        handlers[key as keyof typeof handlers];
+
+      if (handler) handler();
+      if (key.length === 1) handleLetterKey(key);
+    },
+    [handleEnterKey, handleBackspaceKey, handleLetterKey]
+  );
 
   useEffect(() => {
-    if (isWinner || isLoser)
-      return window.removeEventListener(
-        'keyup',
-        handleKeyUp
-      );
-
-    window.addEventListener('keyup', handleKeyUp);
-
-    return () =>
+    if (isWinner || isLoser) {
       window.removeEventListener('keyup', handleKeyUp);
+    } else {
+      window.addEventListener('keyup', handleKeyUp);
+    }
+
+    return () => {
+      window.removeEventListener('keyup', handleKeyUp);
+    };
   }, [words, currentWordIndex, isWinner, isLoser]);
 };
