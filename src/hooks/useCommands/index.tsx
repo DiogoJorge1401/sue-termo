@@ -1,20 +1,10 @@
-import { SetStateAction } from 'react';
 import {
   TOTAL_WORDS,
   useGame,
   WORD_LENGTH
-} from '../context/Game';
-import { checkIfExists } from '../utils/word-utils';
-
-export interface EnterProps {
-  correctWord: string;
-  isWinner: boolean;
-  setIsWinner: (value: SetStateAction<boolean>) => void;
-  setIsLoser: (value: SetStateAction<boolean>) => void;
-  setCurrentWordIndex: (
-    value: SetStateAction<number>
-  ) => void;
-}
+} from '../../context/Game';
+import { checkIfExists } from '../../utils/wordBank';
+import { EnterProps } from './types';
 
 export const useCommands = () => {
   const { words, currentWordIndex, setWords } = useGame();

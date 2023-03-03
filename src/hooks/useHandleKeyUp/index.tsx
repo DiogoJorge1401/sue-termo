@@ -1,18 +1,13 @@
 import { useCallback, useEffect } from 'react';
-import { useGame, WORD_LENGTH } from '../context/Game';
-import { EnterProps } from './useCommands';
-
-interface Props {
-  handleBackspace(): void;
-  handleEnter(p: EnterProps): void;
-}
+import { useGame, WORD_LENGTH } from '../../context/Game';
+import { Handlers, UseHandleKeyUpProps } from './types';
 
 const isLetter = (str: string) => /^[a-zA-Z]+$/.test(str);
 
 export const useHandleKeyUp = ({
   handleEnter,
   handleBackspace
-}: Props) => {
+}: UseHandleKeyUpProps) => {
   const {
     words,
     correctWord,
@@ -73,13 +68,12 @@ export const useHandleKeyUp = ({
     (e: KeyboardEvent) => {
       const key = e.key;
 
-      const handlers = {
+      const handlers: Handlers = {
         Enter: handleEnterKey,
         Backspace: handleBackspaceKey
       };
 
-      const handler =
-        handlers[key as keyof typeof handlers];
+      const handler = handlers[key as keyof Handlers];
 
       if (handler) handler();
       if (key.length === 1) handleLetterKey(key);
