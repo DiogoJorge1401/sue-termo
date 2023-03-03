@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { LetterStateValue } from '../../context/Game';
+import { LetterStateValue } from '../../context/Game/types';
 
-interface Props {
+export interface LetterBlockProps {
   letter: string;
   status?: LetterStateValue;
   delay?: number;
@@ -9,7 +9,9 @@ interface Props {
 
 const ANIMATION_DELAY = 350;
 
-const getLetterBlockClasses = (status: Props['status']) => {
+const getLetterBlockClasses = (
+  status: LetterBlockProps['status']
+) => {
   const animation = 'animate-place';
 
   switch (status) {
@@ -30,7 +32,7 @@ export const LetterBlock = ({
   letter,
   status,
   delay = 0
-}: Props) => {
+}: LetterBlockProps) => {
   const [statusClasses, setStatusClasses] = useState('');
 
   const applyStatusClass = () => {

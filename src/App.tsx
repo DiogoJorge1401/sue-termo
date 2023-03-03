@@ -3,8 +3,7 @@ import {
   GameContextProvider,
   useGame
 } from './context/Game';
-import { useCommands } from './hooks/useCommands';
-import { useHandleKeyUp } from './hooks/useHandleKeyUp';
+import { useHandleKeyUp, useCommands } from './hooks';
 
 const AppHeader = () => (
   <header className="border-b-2 border-black pb-2 mb-3">
