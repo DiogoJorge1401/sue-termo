@@ -1,49 +1,12 @@
 import {
   createContext,
-  Dispatch,
   ReactNode,
-  SetStateAction,
   useContext,
   useState
 } from 'react';
 
-import { getRandomWord } from '../../utils/word-utils';
-
-export interface WordState {
-  word: string;
-  hasAlreadyBeenFilled: boolean;
-}
-
-enum LetterState {
-  Won,
-  Exist,
-  Exact,
-  NotExists
-}
-
-export type LetterStateValue = keyof typeof LetterState;
-interface GameState {
-  isWinner: boolean;
-  setIsWinner: Dispatch<SetStateAction<boolean>>;
-  isLoser: boolean;
-  setIsLoser: Dispatch<SetStateAction<boolean>>;
-  currentWordIndex: number;
-  setCurrentWordIndex: Dispatch<SetStateAction<number>>;
-  words: WordState[];
-  setWords: Dispatch<SetStateAction<WordState[]>>;
-  correctWord: string;
-}
-interface GameState {
-  isWinner: boolean;
-  setIsWinner: Dispatch<SetStateAction<boolean>>;
-  isLoser: boolean;
-  setIsLoser: Dispatch<SetStateAction<boolean>>;
-  currentWordIndex: number;
-  setCurrentWordIndex: Dispatch<SetStateAction<number>>;
-  words: WordState[];
-  setWords: Dispatch<SetStateAction<WordState[]>>;
-  correctWord: string;
-}
+import { getRandomWord } from '../../utils/wordBank';
+import { GameState, WordState } from './types';
 
 export const WORD_LENGTH = 5;
 export const TOTAL_WORDS = 6;
