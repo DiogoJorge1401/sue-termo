@@ -1,4 +1,4 @@
-import wordBank from '../data/word-bank.json';
+import wordBank from '../../data/word-bank.json';
 
 const getRandomIndex = () => {
   return Math.floor(Math.random() * wordBank.length);
