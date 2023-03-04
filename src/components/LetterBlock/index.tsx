@@ -7,7 +7,7 @@ export interface LetterBlockProps {
   delay?: number;
 }
 
-const ANIMATION_DELAY = 350;
+export const ANIMATION_DELAY = 350;
 
 const getLetterBlockClasses = (
   status: LetterBlockProps['status']
@@ -17,10 +17,10 @@ const getLetterBlockClasses = (
   switch (status) {
     case 'Won':
       return `bg-palette-Won text-palette-WonColor ${animation}`;
-    case 'Exist':
-      return `bg-palette-Exist ${animation}`;
     case 'Exact':
       return `bg-palette-Exact text-white ${animation}`;
+    case 'Exist':
+      return `bg-palette-Exist ${animation}`;
     case 'NotExists':
       return `bg-palette-NotExists ${animation}`;
     default:
@@ -44,8 +44,7 @@ export const LetterBlock = ({
   };
 
   useEffect(() => {
-    if (!status)
-      return setStatusClasses('bg-palette-letter');
+    if (!status) return setStatusClasses('bg-palette-letter');
     animateBlock();
   }, [status]);
 
