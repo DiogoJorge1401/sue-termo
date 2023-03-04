@@ -1,19 +1,14 @@
 import { WordRow } from './components/WordRow';
-import {
-  GameContextProvider,
-  useGame
-} from './context/Game';
-import { useHandleKeyUp, useCommands } from './hooks';
+import { useGame } from './context/Game';
+import { useCommands, useHandleKeyUp } from './hooks';
 
-const AppHeader = () => (
+export const AppHeader = () => (
   <header className="border-b-2 border-black pb-2 mb-3">
-    <h1 className="text-4xl text-center font-bold">
-      SueTermo
-    </h1>
+    <h1 className="text-4xl text-center font-bold">SueTermo</h1>
   </header>
 );
 
-const AppFooter = () => {
+export const AppFooter = () => {
   const { isLoser, isWinner } = useGame();
 
   return (
@@ -51,8 +46,4 @@ const App = () => {
   );
 };
 
-export default () => (
-  <GameContextProvider>
-    <App />
-  </GameContextProvider>
-);
+export default App;
