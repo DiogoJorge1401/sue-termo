@@ -12,8 +12,7 @@ export const WordRow = ({
   lettersProp: { hasAlreadyBeenFilled, word },
   rowNumber
 }: Props) => {
-  const { currentWordIndex, correctWord, isWinner } =
-    useGame();
+  const { currentWordIndex, correctWord, isWinner } = useGame();
 
   const isRowActive = currentWordIndex === rowNumber;
 
@@ -32,6 +31,7 @@ export const WordRow = ({
 
   return (
     <div
+      id="word-row"
       className={`text-2xl flex gap-1 justify-between p-2 ${rowClass}`}
     >
       {wordColumns}
