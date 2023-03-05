@@ -17,9 +17,7 @@ export const getLetterStatus = ({
     return isWinner && isRowActive ? 'Won' : 'Exact';
   }
 
-  return correctWord.includes(letterGuessed)
-    ? 'Exist'
-    : 'NotExists';
+  return correctWord.includes(letterGuessed) ? 'Exist' : 'NotExists';
 };
 
 export const generateLetterBlocks = ({

@@ -11,7 +11,7 @@ import { GameState, WordState } from './types';
 export const WORD_LENGTH = 5;
 export const TOTAL_WORDS = 6;
 
-const initialState: GameState = {
+export const initialState: GameState = {
   isWinner: false,
   isLoser: false,
   currentWordIndex: 0,
@@ -19,15 +19,14 @@ const initialState: GameState = {
   correctWord: ''
 } as unknown as GameState;
 
-const GameContext = createContext(initialState);
+export const GameContext = createContext(initialState);
 
 export const GameContextProvider: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
   const [isWinner, setIsWinner] = useState(false);
   const [isLoser, setIsLoser] = useState(false);
-  const [currentWordIndex, setCurrentWordIndex] =
-    useState(0);
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [words, setWords] = useState<WordState[]>(
     Array.from({ length: TOTAL_WORDS }, () => ({
       word: '',
@@ -35,8 +34,6 @@ export const GameContextProvider: React.FC<{
     }))
   );
   const [correctWord] = useState(() => getRandomWord());
-
-  console.log(correctWord);
 
   return (
     <GameContext.Provider
