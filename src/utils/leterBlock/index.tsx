@@ -30,7 +30,7 @@ export const generateLetterBlocks = ({
 }: GenerateLetterBlockProps): JSX.Element[] => {
   const wordColumns = hasAlreadyBeenFilled
     ? Array.from({ length: WORD_LENGTH }, (_, idx) => {
-        const letter = letters[idx] || ' ';
+        const letter = letters[idx];
 
         const status = getLetterStatus({
           letterGuessed: letter,

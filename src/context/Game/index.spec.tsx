@@ -57,7 +57,7 @@ describe('GameContextProvider', () => {
     expect(getByText('correctWord: teste')).toBeInTheDocument();
     expect(
       getByText(
-        'words: [{"word":"","hasAlreadyBeenFilled":false},{"word":"","hasAlreadyBeenFilled":false},{"word":"","hasAlreadyBeenFilled":false},{"word":"","hasAlreadyBeenFilled":false},{"word":"","hasAlreadyBeenFilled":false},{"word":"","hasAlreadyBeenFilled":false}]'
+        'words: [{"word":" ","hasAlreadyBeenFilled":false},{"word":" ","hasAlreadyBeenFilled":false},{"word":" ","hasAlreadyBeenFilled":false},{"word":" ","hasAlreadyBeenFilled":false},{"word":" ","hasAlreadyBeenFilled":false},{"word":" ","hasAlreadyBeenFilled":false}]'
       )
     ).toBeInTheDocument();
   });
@@ -154,7 +154,7 @@ describe('GameContextProvider', () => {
     await waitFor(() =>
       expect(
         getByText(
-          'words: [{"word":"new-word","hasAlreadyBeenFilled":false},{"word":"","hasAlreadyBeenFilled":false},{"word":"","hasAlreadyBeenFilled":false},{"word":"","hasAlreadyBeenFilled":false},{"word":"","hasAlreadyBeenFilled":false},{"word":"","hasAlreadyBeenFilled":false}]'
+          'words: [{"word":"new-word","hasAlreadyBeenFilled":false},{"word":" ","hasAlreadyBeenFilled":false},{"word":" ","hasAlreadyBeenFilled":false},{"word":" ","hasAlreadyBeenFilled":false},{"word":" ","hasAlreadyBeenFilled":false},{"word":" ","hasAlreadyBeenFilled":false}]'
         )
       ).toBeInTheDocument()
     );

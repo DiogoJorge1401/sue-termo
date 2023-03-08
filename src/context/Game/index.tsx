@@ -29,7 +29,7 @@ export const GameContextProvider: React.FC<{
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [words, setWords] = useState<WordState[]>(
     Array.from({ length: TOTAL_WORDS }, () => ({
-      word: '',
+      word: ' ',
       hasAlreadyBeenFilled: false
     }))
   );
