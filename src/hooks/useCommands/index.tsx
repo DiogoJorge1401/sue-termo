@@ -42,7 +42,7 @@ export const useCommands = () => {
 
     if (!isWinner && nextIndex === TOTAL_WORDS) setIsLoser(true);
 
-    setCurrentWordIndex((prev) => prev + 1);
+    setCurrentWordIndex(currentWordIndex + 1);
 
     setWords(copiedWords);
   }, [
@@ -73,14 +73,14 @@ export const useCommands = () => {
   }, [words, currentWordIndex, setWords]);
 
   const handleLetter = useCallback(
-    (key: string) => {
+    (letter: string) => {
       const { word } = words[currentWordIndex];
 
       if (word.length >= WORD_LENGTH) return;
 
       const copy = [...words];
 
-      const updatedWord = word + key;
+      const updatedWord = word + letter;
 
       copy.splice(currentWordIndex, 1, {
         hasAlreadyBeenFilled: false,
