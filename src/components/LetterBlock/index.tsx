@@ -50,7 +50,7 @@ export const LetterBlock = ({
 
   return (
     <div
-      className={`w-1/6 h-16 border-2 flex items-center justify-center text-2xl rounded-md shadow-lg uppercase font-bold  ${statusClasses}`}
+      className={`h-14 w-14 flex justify-center items-center text-base font-semibold uppercase rounded-md border-2 ${statusClasses}`}
     >
       {letter}
     </div>

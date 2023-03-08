@@ -32,7 +32,7 @@ export const WordRow = ({
   return (
     <div
       id="word-row"
-      className={`text-2xl flex gap-1 justify-between p-2 ${rowClass}`}
+      className={`${rowClass} w-full max-w-xs flex justify-center gap-2 py-2 px-2 mx-auto sm:max-w-sm sm:justify-between sm:gap-0 sm:px-1 md:justify-around lg:justify-center lg:gap-2 xl:gap-3`}
     >
       {wordColumns}
     </div>
