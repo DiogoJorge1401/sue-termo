@@ -1,10 +1,10 @@
 import { WordRow } from './components/WordRow';
 import { useGame } from './context/Game';
-import { useCommands, useHandleKeyUp } from './hooks';
+import { useHandleKeyUp } from './hooks';
 
 export const AppHeader = () => (
-  <header className="border-b-2 border-black pb-2 mb-3">
-    <h1 className="text-4xl text-center font-bold">SueTermo</h1>
+  <header className="w-1/2 mx-auto p-1">
+    <h1 className="text-2xl text-center font-semibold">SueTermo</h1>
   </header>
 );
 
@@ -19,18 +19,16 @@ export const AppFooter = () => {
   );
 };
 const App = () => {
-  const { words } = useGame();
+  const { words, isLoser, isWinner } = useGame();
 
-  const { handleBackspace, handleEnter } = useCommands();
-
-  useHandleKeyUp({ handleEnter, handleBackspace });
+  useHandleKeyUp({ isWinner, isLoser });
 
   return (
-    <div className="w-full h-screen bg-palette-background text-palette-textColor">
-      <div className="w-96 mx-auto pt-2">
-        <AppHeader />
+    <div className="h-screen bg-palette-background text-palette-textColor">
+      <AppHeader />
 
-        <main className="flex flex-col gap-3">
+      <main className="flex flex-col p-1 mx-auto sm:px-0 sm:gap-1">
+        <div className="flex flex-col">
           {words.map((letters, idx) => (
             <WordRow
               rowNumber={idx}
@@ -38,10 +36,12 @@ const App = () => {
               key={idx}
             />
           ))}
-        </main>
+        </div>
 
-        <AppFooter />
-      </div>
+        <div className=""></div>
+      </main>
+
+      <AppFooter />
     </div>
   );
 };
