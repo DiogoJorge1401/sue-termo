@@ -1,11 +1,13 @@
+jest.mock('../../utils/wordBank');
+
+import { getRandomWord } from '../../utils/wordBank';
 import { render, screen, waitFor } from '@testing-library/react';
-import { GameContextProvider, useGame } from '.';
-import { vi } from 'vitest';
 import { act } from 'react-dom/test-utils';
+import { GameContextProvider, useGame } from '.';
 
 describe('GameContextProvider', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.restoreAllMocks();
   });
 
   it('should renders provider with correct value and children', () => {
@@ -21,9 +23,7 @@ describe('GameContextProvider', () => {
   });
 
   it('should initializes game state correctly', () => {
-    vi.mock('../../utils/wordBank', () => ({
-      getRandomWord: vi.fn().mockReturnValue('teste')
-    }));
+    (getRandomWord as jest.Mock).mockReturnValueOnce('teste');
 
     const TestComponent = () => {
       const {
