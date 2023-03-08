@@ -1,25 +1,27 @@
+import { useCallback } from 'react';
 import {
   TOTAL_WORDS,
   useGame,
   WORD_LENGTH
 } from '../../context/Game';
 import { checkIfExists } from '../../utils/wordBank';
-import { EnterProps } from './types';
 
 export const useCommands = () => {
-  const { words, currentWordIndex, setWords } = useGame();
-
-  const handleEnter = ({
+  const {
+    words,
+    currentWordIndex,
     correctWord,
     isWinner,
     setCurrentWordIndex,
     setIsLoser,
-    setIsWinner
-  }: EnterProps) => {
+    setIsWinner,
+    setWords
+  } = useGame();
+
+  const handleEnter = useCallback(() => {
     const { word } = words[currentWordIndex];
 
-    if (word.length < WORD_LENGTH || !checkIfExists(word))
-      return;
+    if (word.length < WORD_LENGTH || !checkIfExists(word)) return;
 
     const copiedWords = [...words];
 
@@ -38,35 +40,57 @@ export const useCommands = () => {
 
     const nextIndex = currentWordIndex + wordOffset;
 
-    if (!isWinner && nextIndex === TOTAL_WORDS)
-      setIsLoser(true);
+    if (!isWinner && nextIndex === TOTAL_WORDS) setIsLoser(true);
 
     setCurrentWordIndex((prev) => prev + 1);
 
     setWords(copiedWords);
-  };
+  }, [
+    words,
+    currentWordIndex,
+    correctWord,
+    setWords,
+    setIsWinner,
+    setIsLoser,
+    setCurrentWordIndex
+  ]);
 
-  const handleBackspace = () => {
+  const handleBackspace = useCallback(() => {
     const { word } = words[currentWordIndex];
 
     if (!word.length) return;
 
-    return setWords((prev) => {
-      const copy = [...prev];
+    const copy = [...words];
 
-      const { word, hasAlreadyBeenFilled } =
-        copy[currentWordIndex];
+    const updatedWord = word.substring(0, word.length - 1);
 
-      let updatedWord = word.substring(0, word.length - 1);
+    copy.splice(currentWordIndex, 1, {
+      hasAlreadyBeenFilled: false,
+      word: updatedWord
+    });
+
+    setWords(copy);
+  }, [words, currentWordIndex, setWords]);
+
+  const handleLetter = useCallback(
+    (key: string) => {
+      const { word } = words[currentWordIndex];
+
+      if (word.length >= WORD_LENGTH) return;
+
+      const copy = [...words];
+
+      const updatedWord = word + key;
 
       copy.splice(currentWordIndex, 1, {
-        hasAlreadyBeenFilled,
+        hasAlreadyBeenFilled: false,
         word: updatedWord
       });
 
-      return copy;
-    });
-  };
+      setWords(copy);
+    },
+    [words, currentWordIndex, setWords]
+  );
 
-  return { handleBackspace, handleEnter };
+  return { handleBackspace, handleEnter, handleLetter };
 };
