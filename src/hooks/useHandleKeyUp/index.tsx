@@ -1,41 +1,19 @@
 import { useCallback, useEffect } from 'react';
-import { useGame, WORD_LENGTH } from '../../context/Game';
+import { useCommands } from '..';
 import { Handlers, UseHandleKeyUpProps } from './types';
 
 const isLetter = (str: string) => /^[a-zA-Z]+$/.test(str);
 
 export const useHandleKeyUp = ({
-  handleEnter,
-  handleBackspace
+  isLoser,
+  isWinner
 }: UseHandleKeyUpProps) => {
-  const {
-    words,
-    correctWord,
-    isLoser,
-    isWinner,
-    currentWordIndex,
-    setWords,
-    setCurrentWordIndex,
-    setIsLoser,
-    setIsWinner
-  } = useGame();
+  const { handleBackspace, handleEnter, handleLetter } =
+    useCommands();
 
   const handleEnterKey = useCallback(() => {
-    handleEnter({
-      correctWord,
-      isWinner,
-      setCurrentWordIndex,
-      setIsLoser,
-      setIsWinner
-    });
-  }, [
-    correctWord,
-    isWinner,
-    handleEnter,
-    setCurrentWordIndex,
-    setIsLoser,
-    setIsWinner
-  ]);
+    handleEnter();
+  }, [handleEnter]);
 
   const handleBackspaceKey = useCallback(() => {
     handleBackspace();
@@ -44,24 +22,9 @@ export const useHandleKeyUp = ({
   const handleLetterKey = useCallback(
     (key: string) => {
       if (!isLetter(key)) return;
-
-      setWords((prev) => {
-        const copy = [...prev];
-        const { word, hasAlreadyBeenFilled } =
-          copy[currentWordIndex];
-
-        if (word.length >= WORD_LENGTH) return copy;
-
-        const updatedWord = word + key;
-        copy.splice(currentWordIndex, 1, {
-          hasAlreadyBeenFilled,
-          word: updatedWord
-        });
-
-        return copy;
-      });
+      handleLetter(key);
     },
-    [currentWordIndex, setWords]
+    [handleLetter]
   );
 
   const handleKeyUp = useCallback(
@@ -76,7 +39,7 @@ export const useHandleKeyUp = ({
       const handler = handlers[key as keyof Handlers];
 
       if (handler) handler();
-      if (key.length === 1) handleLetterKey(key);
+      if (key.length === 1) handleLetterKey(key.toLowerCase());
     },
     [handleEnterKey, handleBackspaceKey, handleLetterKey]
   );
@@ -91,5 +54,5 @@ export const useHandleKeyUp = ({
     return () => {
       window.removeEventListener('keyup', handleKeyUp);
     };
-  }, [words, currentWordIndex, isWinner, isLoser]);
+  }, [handleKeyUp]);
 };

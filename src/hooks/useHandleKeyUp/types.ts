@@ -1,8 +1,6 @@
-import { EnterProps } from '../useCommands/types';
-
 export interface UseHandleKeyUpProps {
-  handleBackspace(): void;
-  handleEnter(p: EnterProps): void;
+  isWinner: boolean;
+  isLoser: boolean;
 }
 
 export type Handlers = {
